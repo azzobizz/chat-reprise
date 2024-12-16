@@ -1,0 +1,146 @@
+{
+    "fields": {
+      "country": {
+        "type": "string",
+        "required": true,
+        "validation": {
+          "type": "string"
+        }
+      },
+      "language": {
+        "type": "string",
+        "required": true,
+        "validation": {
+          "type": "string"
+        }
+      },
+      "phoneNumber": {
+        "type": "string",
+        "required": true,
+        "validation": {
+          "pattern": "^\\+?[1-9]\\d{1,14}$"
+        }
+      },
+      "consent": {
+        "type": "boolean",
+        "required": true
+      },
+      "firstname": {
+        "type": "string",
+        "required": true,
+        "validation": {
+          "minLength": 2
+        }
+      },
+      "lastname": {
+        "type": "string",
+        "required": true,
+        "validation": {
+          "minLength": 2
+        }
+      },
+      "zipcode": {
+        "type": "string",
+        "required": true,
+        "validation": {
+          "pattern": "^[0-9]{5}$"
+        },
+        "external": {
+          "type": "dealerApi",
+          "mapping": {
+            "dealers": "dealers"
+          }
+        }
+      },
+      "dealerId": {
+        "type": "number",
+        "required": true,
+        "dependsOn": "zipcode"
+      },
+      "registration": {
+        "type": "string",
+        "required": true,
+        "validation": {
+          "pattern": "^[A-Z]{2}[0-9]{3}[A-Z]{2}$"
+        },
+        "external": {
+          "type": "vehicleApi",
+          "mapping": {
+            "make": "vehicle.make",
+            "model": "vehicle.model",
+            "versions": "vehicle.versions"
+          }
+        }
+      },
+      "versionId": {
+        "type": "number",
+        "required": true,
+        "dependsOn": "registration"
+      },
+      "mileage": {
+        "type": "number",
+        "required": true,
+        "validation": {
+          "min": 0,
+          "max": 999999
+        }
+      },
+      "optin": {
+        "type": "boolean",
+        "required": true
+      },
+      "email": {
+        "type": "string",
+        "required": true,
+        "validation": {
+          "pattern": "^[^@]+@[^@]+\\.[^@]+$"
+        }
+      },
+      "satisfaction": {
+        "type": "number",
+        "required": true,
+        "validation": {
+          "min": 0,
+          "max": 10
+        }
+      },
+      "feedback": {
+        "type": "string",
+        "required": false
+      },
+      "suggestions": {
+        "type": "string",
+        "required": false
+      },
+      "recommendation": {
+        "type": "boolean",
+        "required": true
+      }
+    },
+    "conversation": {
+      "prompts": {
+        "default": "Tu es un assistant qui guide un utilisateur dans un formulaire de reprise de véhicule. Je dois pouvoir récupérer les informations de l'utilisateur. Discute avec lui en utilisant le même type de langage pour récupérer ces informations.",
+        "formal": "Vous êtes un assistant qui guide un utilisateur dans un formulaire de reprise de véhicule. Chaque étape doit être validée dans un ordre précis. Si une réponse n'est pas correcte, générez une réponse en expliquant pourquoi et demandez une réponse valide."
+      },
+      "defaultOrder": [
+        "firstname",
+        "lastname",
+        "zipcode",
+        "dealerId",
+        "registration",
+        "versionId",
+        "mileage",
+        "email",
+        "phoneNumber",
+        "consent",
+        "satisfaction",
+        "feedback",
+        "suggestions",
+        "recommendation"
+      ]
+    },
+    "storage": {
+      "type": "inMemory",
+      "options": {}
+    }
+  }
